@@ -1,10 +1,12 @@
 import sys
 from model.graph import Graph
 
-def dijkstra(graph: Graph, start_vertex: str):
+def dijkstra(graph: Graph, start_vertex: str, end_vertex: str):
     D = {v: sys.maxsize for v in graph.vertices}
     D[start_vertex] = 0
-
+    
+    predecessor = {v: None for v in graph.vertices}
+    
     unvisited_vertices = set(graph.vertices)
 
     while unvisited_vertices:
@@ -25,6 +27,14 @@ def dijkstra(graph: Graph, start_vertex: str):
             distance = D[min_vertex] + (current_node.weight if current_node.weight else 1)
             if distance < D[current_node.value]:
                 D[current_node.value] = distance
+                predecessor[current_node.value] = min_vertex
             current_node = current_node.next
 
-    return D
+    path = []
+    current = end_vertex
+    while current is not None:
+        path.append(current)
+        current = predecessor[current]
+    path.reverse()
+
+    return D, path

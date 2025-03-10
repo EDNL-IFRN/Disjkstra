@@ -1,6 +1,7 @@
 import csv
 from model.graph import Graph
 from functions.disjkstra import dijkstra
+from functions.visualization import visualize_graph
 
 def add_edges(file_path, graph: Graph):
     with open(file_path, 'r') as file:
@@ -29,8 +30,11 @@ def main():
     start_vertex = input("Digite o vértice inicial: ")
     end_vertex = input("Digite o vértice final: ")
 
-    distances = dijkstra(graph, start_vertex)
+    distances, shortest_path = dijkstra(graph, start_vertex, end_vertex)
     print(f"A menor distância de {start_vertex} para {end_vertex} é {distances[end_vertex]}")
+    print(f"Caminho mais curto: {' -> '.join(shortest_path)}")
+
+    visualize_graph(graph, shortest_path)
 
 if __name__ == '__main__':
     main()
